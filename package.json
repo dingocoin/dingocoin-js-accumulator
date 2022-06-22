@@ -1,0 +1,16 @@
+{
+  "name": "@dingocoin-js/fold",
+  "version": "1.0.0",
+  "description": "A library to help implement programs to folds over Dingocoin blocks",
+  "main": "index.js",
+  "repository": "https://github.com/dingocoin/dingocoin-js-fold.git",
+  "author": "rkbling",
+  "license": "MIT",
+  "dependencies": {
+    "@dingocoin-js/node-rpc": "^1.0.2",
+    "request": "^2.88.2"
+  },
+  "scripts": {
+    "test": "mocha test/ --timeout 0"
+  }
+}
