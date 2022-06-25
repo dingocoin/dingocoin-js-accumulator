@@ -1,1 +1,1 @@
-module.exports = require('./lib/fold');
+module.exports = require('./lib/accumulator');
