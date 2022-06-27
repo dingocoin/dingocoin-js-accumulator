@@ -79,12 +79,16 @@ The structure of each block is as follows:
     // List of vins in the transaction.
     vins:
     [
-      // Each vin has the following structure.
+      // This structure is used for P2PKH, P2SH vins.
       {
         type: "pubkeyhash" <OR> "pubkey" <OR> "scripthash",
         value: "....",
         vout: ...,
         address: "..."
+      },
+      // This structure is used for block reward payouts.
+      {
+        type: "coinbase"
       },
       ...
     ],
