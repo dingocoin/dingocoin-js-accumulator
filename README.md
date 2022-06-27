@@ -56,7 +56,7 @@ let count = 0;
 const acc2 = new Accumulator(rpcClient, 1, 0,
     async (height, block) => {
       for (const tx of block.txs) {
-        if (!block.vins.some((x) => x.type === 'coinbase')) {
+        if (!tx.vins.some((x) => x.type === 'coinbase')) {
           count += 1;
         }
       }
