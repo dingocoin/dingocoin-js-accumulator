@@ -1,6 +1,6 @@
 {
   "name": "@dingocoin-js/accumulator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JavaScript library to help implement accumulator-style programs over Dingocoin blocks",
   "main": "index.js",
   "repository": "https://github.com/dingocoin/dingocoin-js-accumulator.git",
