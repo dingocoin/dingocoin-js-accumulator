@@ -2,12 +2,12 @@
 JavaScript library to help implement accumulator-style programs over Dingocoin blocks.
 
 ### What is an accumulator-style program?
-Accumulator-style programs derive its name from the concept of 
+Accumulator-style programs derive its name from the concept of
 [accumulators in functional programming](https://en.wikipedia.org/wiki/Fold_(higher-order_function)).
 
 An accumulator-style program scans through each block in the Dingocoin blockchain sequentially, executing the same function for each block.
-The callback allows the user to modify state variables in their script, which are persisted onto the callback for the next block. 
-Thus, such a program is said to _accumulate_ to the program state, through calling the callback sequentially across the blocks.
+The callback allows the user to modify state variables in their script, which are persisted onto the callback for the next block.
+Thus, such a program is said to _accumulate_ changes to the program state, through calling the callback sequentially across the blocks.
 
 ## Installation
 `npm install @dingocoin-js/accumulator`
@@ -24,7 +24,7 @@ const nodeRpc = require('@dingocoin-js/node-rpc');
 // Create RPC client using default cookie path (~/.dingocoin/.cookie).
 const rpcClient = nodeRpc.fromCookie();
 
-/* 
+/*
  * Example 1: Accumulator program to print every block.
  *
  * This example does not maintain any program state.
@@ -42,9 +42,9 @@ const acc1 = new Accumulator(
 acc1.start(); // Run accumulator program.
 
 
-/* 
+/*
  * Example 2: Accumulator program to count how user transactions exist.
- * 
+ *
  * A user transaction is defined as one that does not correspond to
  * a block reward payout. Block reward payouts are identified by the presence
  * of a vin with type === 'coinbase'.
@@ -61,8 +61,8 @@ const acc2 = new Accumulator(rpcClient, 1, 0,
         }
       }
     },
-    async (height) => { 
-      throw new Error("Unexpected rollback"); 
+    async (height) => {
+      throw new Error("Unexpected rollback");
     });
 acc2.start(); // Run accumulator program.
 
@@ -73,11 +73,11 @@ acc2.start(); // Run accumulator program.
 The structure of each block is as follows:
 ```
 // Each block is a list of transactions.
-[ 
+[
   // Each transaction contains a vins list and vouts list.
   {
     // List of vins in the transaction.
-    vins: 
+    vins:
     [
       // Each vin has the following structure.
       {
@@ -89,7 +89,7 @@ The structure of each block is as follows:
       ...
     ],
     // List of vouts in the transaction.
-    vouts: 
+    vouts:
     [
       // This structure is used for P2PKH, P2SH vouts.
       {
@@ -116,12 +116,12 @@ This often happens when latency in the network causes forks to grow separately. 
 another chain, if the amount of work done for the other chain is larger. This is precisely the [Proof-of-Work (PoW) consensus mechanism](https://www.investopedia.com/terms/p/proof-work.asp).
 
 When writing an accumulator-style program, we recommend using a large enough confirmation window. This reduces the possibility that blocks are invalidated
-due to re-orgs, **after** they have been processed by the accumulator's callback. Otherwise, a re-org will cause the program state to de-sync. 
+due to re-orgs, **after** they have been processed by the accumulator's callback. Otherwise, a re-org will cause the program state to de-sync.
 
-If such re-orgs are inevitable, the user can handle them cleanly by passing a rollback function `(height) => { ... }` to the `Accumulator` constructor. 
+If such re-orgs are inevitable, the user can handle them cleanly by passing a rollback function `(height) => { ... }` to the `Accumulator` constructor.
 The rollback function would contain program-specific logic to revert the program state back to some height.
 It then returns the height of the next block, which informs the `Accumulator` where to resume scanning the blocks from.
-The `height` argument is the height of the would-be block if the re-org did not occur. 
+The `height` argument is the height of the would-be block if the re-org did not occur.
 
 ## More examples
 Below is a list of realistic use cases of accumulator-style programs:
